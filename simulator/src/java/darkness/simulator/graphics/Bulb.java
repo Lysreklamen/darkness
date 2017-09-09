@@ -10,16 +10,13 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 import darkness.simulator.Application;
 
-import java.util.List;
-
 public class Bulb extends Node {
 	private final Geometry geometry;
 	private final PointLight light;
 
-	public Bulb(float positionX, float positionY, List<Float> perimeterX, List<Float> perimeterY,
-			Node parentNode, String name) {
+	public Bulb(Point position, Node parentNode, String name) {
 		super(name);
-		setLocalTranslation(new Vector3f(positionX, positionY, 0));
+		setLocalTranslation(new Vector3f(position.x, position.y, 0));
 		parentNode.attachChild(this);
 
 		ColorRGBA color = ColorRGBA.Black;
@@ -32,9 +29,7 @@ public class Bulb extends Node {
 		this.geometry.setMaterial(mat);
 		// Move the bulb out from the billboard (we don't want to do translate the whole node like this, since that will also shift the aluminum)
 		this.geometry.setLocalTranslation(new Vector3f(0, 0, 0.05f));
-
 		attachChild(this.geometry);
-		attachChild(new Aluminum(perimeterX, perimeterY, "Aluminum:" + name));
 
 		this.light = new PointLight();
 		this.light.setColor(color);

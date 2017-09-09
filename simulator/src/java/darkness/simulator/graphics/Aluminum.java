@@ -8,8 +8,8 @@ import darkness.simulator.Application;
 import java.util.List;
 
 public class Aluminum extends Geometry {
-	public Aluminum(List<Float> perimeterX, List<Float> perimeterY, String name) {
-		super(name, new AluminumMesh(perimeterX, perimeterY));
+	public Aluminum(List<Point> perimeter, String name) {
+		super(name, new AluminumMesh(perimeter));
 
 		Material coverMat = new Material(Application.getInstance().getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
 		coverMat.setBoolean("UseMaterialColors", true);
