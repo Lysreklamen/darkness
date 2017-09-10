@@ -95,6 +95,9 @@ public class Application extends SimpleApplication {
         for(String line = reader.readLine(); line != null; line = reader.readLine()) {
             lineNumber++;
             try {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
                 String[] parts = line.split("[ \\t]+");
                 String maybeInstruction = parts[0].toUpperCase();
                 if (maybeInstruction.equals("OFFSET")) {
@@ -115,7 +118,7 @@ public class Application extends SimpleApplication {
                     continue;
                 }
                 if (parts.length < 7 || parts.length % 2 != 1) {
-                    System.err.println("Parse error: " + line);
+                    System.err.println("Parse error on line " + lineNumber + ": " + line);
                     continue;
                 }
 
