@@ -24,7 +24,7 @@ public class Bulb extends Node {
 		mat.getAdditionalRenderState().setFaceCullMode(RenderState.FaceCullMode.Front);
 		mat.setColor("Color", color);
 
-		Sphere sphere = new Sphere(5, 5, 0.05f);
+		Sphere sphere = new Sphere(5, 5, 0.04f);
 		this.geometry = new Geometry(toString(), sphere);
 		this.geometry.setMaterial(mat);
 		// Move the bulb out from the billboard (we don't want to do translate the whole node like this, since that will also shift the aluminum)
@@ -33,7 +33,7 @@ public class Bulb extends Node {
 
 		this.light = new PointLight();
 		this.light.setColor(color);
-		this.light.setRadius(0.3f);
+		this.light.setRadius(0.5f);
 		this.light.setPosition(getWorldTranslation());
 		Application.getInstance().getRootNode().addLight(this.light);
 	}

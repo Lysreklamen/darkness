@@ -95,7 +95,7 @@ public class Application extends SimpleApplication {
         for(String line = reader.readLine(); line != null; line = reader.readLine()) {
             lineNumber++;
             try {
-                String[] parts = line.split(" ");
+                String[] parts = line.split("[ \\t]+");
                 String maybeInstruction = parts[0].toUpperCase();
                 if (maybeInstruction.equals("OFFSET")) {
                     offset = new Point(Float.parseFloat(parts[1]), Float.parseFloat(parts[2]));
@@ -105,12 +105,13 @@ public class Application extends SimpleApplication {
                     scale = new Point(Float.parseFloat(parts[1]), Float.parseFloat(parts[2]));
                     continue;
                 }
-                if (maybeInstruction.equals("ALU")) {
+                if (maybeInstruction.equals("ALU") || maybeInstruction.equals("ALUOPEN")) {
                     List<Point> perimeter = new ArrayList<>();
                     for (int i = 1; i < parts.length; i += 2) {
                         perimeter.add(parsePoint(parts[i], parts[i + 1], offset, scale));
                     }
-                    parentNode.attachChild(new Aluminum(perimeter, "Aluminum:" + lineNumber));
+                    boolean closed = maybeInstruction.equals("ALU");
+                    parentNode.attachChild(new Aluminum(perimeter, closed, "Aluminum:" + lineNumber));
                     continue;
                 }
                 if (parts.length < 7 || parts.length % 2 != 1) {

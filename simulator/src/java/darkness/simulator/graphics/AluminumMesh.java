@@ -9,7 +9,7 @@ import java.util.List;
 public class AluminumMesh extends Mesh {
 	private static final float WIDTH = 0.15f;
 	
-	public AluminumMesh(List<Point> perimeter) {
+	public AluminumMesh(List<Point> perimeter, boolean closed) {
 		float[] vertexBuffer = new float[perimeter.size() * 6]; // Each perimeter entry creates an inner and an outer point, each with (x,y,z)
 		for (int i = 0; i < perimeter.size(); i++) {
 			int base = i * 6;
@@ -19,9 +19,10 @@ public class AluminumMesh extends Mesh {
 		}
 		setBuffer(Type.Position, 3, vertexBuffer);
 
-		int[] indexBuffer = new int[perimeter.size() * 12]; // Each perimeter entry creates four triangles (one quad facing in and one quad facing out), each with three vertices
-		float[] normalBuffer = new float[perimeter.size() * 12];
-		for (int i = 0; i < perimeter.size(); i++) {
+		int quadCount = perimeter.size() - (closed ? 0 : 1);
+		int[] indexBuffer = new int[quadCount * 12]; // Each perimeter entry creates four triangles (one quad facing in and one quad facing out), each with three vertices
+		float[] normalBuffer = new float[quadCount * 12];
+		for (int i = 0; i < quadCount; i++) {
 			int base = i * 12;
 			int currentInner = i * 2;                          // Index of current inner perimeter vertex
 			int currentOuter = currentInner + 1;               // Index of current outer perimeter vertex
