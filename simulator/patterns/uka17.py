@@ -34,12 +34,26 @@ def bulbRel(id, x, y):
     bulb(id)
 
 
-def startAlu():
-    print "ALU",
+def startAlu(closed=True):
+    print "ALU" if closed else "ALUOPEN",
 
 
 def alu(x, y):
     print "({0:.3f}, {1:.3f});".format(x, y),
+
+
+def aluAbs(x, y):
+    global currentX, currentY
+    currentX = x
+    currentY = y
+    alu(currentX, currentY)
+
+
+def aluRel(x, y):
+    global currentX, currentY
+    currentX += x
+    currentY += y
+    alu(currentX, currentY)
 
 
 def endAlu():
@@ -49,7 +63,15 @@ def endAlu():
 def fullAlu(points):
     startAlu()
     for point in points:
-        alu(*point)
+        aluAbs(*point)
+    endAlu()
+
+
+def fullAluRel(start, points):
+    startAlu()
+    aluAbs(*start)
+    for point in points:
+        aluRel(*point)
     endAlu()
 
 
@@ -58,7 +80,7 @@ def arc(centerX, centerY, radius, segments, fromAngle, toAngle):
         angle = fromAngle + (toAngle - fromAngle) * i / segments
         x = centerX + radius * cos(angle)
         y = centerY + radius * sin(angle)
-        alu(x, y)
+        aluAbs(x, y)
 
 
 def rightArc(centerX, centerY, radius, segments, height):
@@ -75,12 +97,12 @@ def repeatedLetter(shift):
     basePoints = [(2.29, 0.00), (2.18, 0.10), (2.08, 0.22), (1.98, 0.37), (1.98, 1.65), (2.08, 1.80), (2.18, 1.92), (2.29, 2.02), (2.25, 1.77), (2.22, 1.52), (2.21, 1.27), (2.20, 1.01), (2.21, 0.75), (2.22, 0.50), (2.25, 0.25)]
     fullAlu([(p[0] + shift, p[1]) for p in basePoints])
     startAlu()
-    rightArc(1.70 + shift, 1.01, 1.23, 20, 2.02)
-    leftArc(2.29 + 5.15 + shift, 1.01, 5.15, 20, 2.02)
+    rightArc(1.70 + shift, 1.01, 1.23, 16, 2.02)
+    leftArc(2.29 + 5.15 + shift, 1.01, 5.15, 8, 2.02)
     endAlu()
     startAlu()
-    rightArc(1.70 + shift, 1.01, 1.13, 10, 1.69)
-    leftArc(2.29 + 5.15 + shift, 1.01, 5.05, 10, 1.69)
+    rightArc(1.70 + shift, 1.01, 1.13, 16, 1.69)
+    leftArc(2.29 + 5.15 + shift, 1.01, 5.05, 8, 1.69)
     endAlu()
     print
 
@@ -111,7 +133,60 @@ print
 
 repeatedLetter(0)
 
+fullAluRel((3.09, 0.00), [
+    ( 0.00,  0.63),
+    (-0.10,  0.00),
+    ( 0.00,  0.10),
+    ( 0.10,  0.00),
+    ( 0.00,  0.30),
+    ( 0.16,  0.00),
+    ( 0.00, -0.30),
+    ( 0.06,  0.00),
+    ( 0.00,  0.30),
+    ( 0.33,  0.00),
+    ( 0.00, -0.10),
+    (-0.23,  0.00),
+    ( 0.00, -0.20),
+    ( 0.10,  0.00),
+    ( 0.00, -0.10),
+    (-0.10,  0.00),
+    ( 0.00, -0.53),
+    ( 0.23,  0.00),
+    ( 0.00, -0.10),
+    (-0.33,  0.00),
+    ( 0.00,  0.63),
+    (-0.06,  0.00),
+    ( 0.00, -0.63),
+])
+
 repeatedLetter(2.27)
+
+startAlu()
+aluAbs( 5.32,  0.30)
+aluRel( 0.00,  1.06)
+aluRel( 0.10,  0.00)
+aluRel( 0.00, -1.06)
+arc(5.62, 0.30, 0.20, 16, pi, 2 * pi)
+aluAbs( 5.82,  0.30)
+aluRel( 0.00,  1.06)
+aluRel( 0.10,  0.00)
+aluRel( 0.00, -1.06)
+arc(5.62, 0.30, 0.30, 16, 2 * pi, pi)
+endAlu()
+
+startAlu()
+aluAbs( 5.47,  0.30)
+aluRel( 0.00,  1.06)
+aluRel( 0.15,  0.00)
+aluRel( 0.00, -1.21)
+arc(5.62, 0.30, 0.15, 8, 3 * pi / 2, pi)
+endAlu()
+
+fullAlu([(6.12, 0.32), (6.04, 2.02), (6.17, 2.02), (6.22, 0.32)])
+fullAlu([(6.28, 0.32), (6.23, 2.02), (6.43, 2.02), (6.38, 0.32)])
+startAlu()
+arc(6.25, 0.14, 0.14, 32, 0, 2 * pi * 31 / 32)
+endAlu()
 
 print "ALU (3.74, 0.42); (3.74, 0.62); (3.99, 0.62); (3.99, 0.42);"
 print "ALU (3.74, 0.68); (3.74, 0.78); (3.99, 0.78); (3.99, 0.68);"
