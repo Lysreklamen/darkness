@@ -153,6 +153,9 @@ string getNextFrameFilenameFromPlaylist(string playlistFilename, string currentF
 		string line;
 		ifstream playlistFile(playlistFilename.c_str());
 		while (getline(playlistFile, line)) {
+            if (line.back() == '\r')
+                line.pop_back();
+ 
 			if (line.find_first_not_of(" \t") != string::npos) {
 				filenames.push_back(line);
 			}
